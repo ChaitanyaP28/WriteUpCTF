@@ -160,39 +160,51 @@
         });
 
         function loadHomePage() {
-            const contentWrapper = document.querySelector('.content-wrapper');
-            contentWrapper.innerHTML = `
-                <h1 class="write-ups-heading">Capture the Flag Writeups</h1>  <!-- Added "Write-Ups" heading with class -->
-                <div class="breadcrumb">
-                    <a href="#" onclick="loadHomePage()">Home</a>
-                </div>
-            `;
+    const contentWrapper = document.querySelector('.content-wrapper');
+    contentWrapper.innerHTML = `
+        <h1 class="write-ups-heading">Capture the Flag Writeups</h1>
+        <div class="breadcrumb">
+            <a href="#" onclick="loadHomePage()">Home</a>
+        </div>
+    `;
+    
+    fetch('CTFs.json')
+        .then(response => response.json())
+        .then(data => {
+            // Sort CTFs by date
+            data.sort((a, b) => new Date(b.date) - new Date(a.date));
             
-            fetch('CTFs.json')
-                .then(response => response.json())
-                .then(data => {
-                    // Sort CTFs by date
-                    data.sort((a, b) => new Date(b.date) - new Date(a.date));
-                    
-                    data.forEach(ctf => {
-                        const postDiv = document.createElement('div');
-                        postDiv.classList.add('post');
-                        postDiv.innerHTML = `
-                            <div>
-                                <h3>${ctf.title}</h3>
-                                <p>${ctf.description}</p>
-                                <p><strong>Date:</strong> ${ctf.date}</p>
-                            </div>
-                            <img src="${ctf.image}" alt="${ctf.title}">
-                        `;
-                        postDiv.addEventListener("click", function() {
-                            loadMarkdown(ctf.md, ctf.title);
-                        });
-                        contentWrapper.appendChild(postDiv);
-                    });
-                })
-                .catch(error => console.error('Error loading CTFs:', error));
-        }
+            data.forEach(ctf => {
+                const postDiv = document.createElement('div');
+                postDiv.classList.add('post');
+                let postContent = `
+                    <div>
+                        <h3>${ctf.title}</h3>
+                        <p>${ctf.description}</p>
+                `;
+                
+                // Check if the date is not empty
+                if (ctf.date && ctf.date.trim() !== "") {
+                    postContent += `<p><strong>Date:</strong> ${ctf.date}</p>`;
+                }
+                
+                postContent += `</div>`;
+                
+                // Check if the image filename is not empty
+                if (ctf.image && ctf.image.trim() !== "") {
+                    postContent += `<img src="${ctf.image}" alt="${ctf.title}">`;
+                }
+                
+                postDiv.innerHTML = postContent;
+                postDiv.addEventListener("click", function() {
+                    loadMarkdown(ctf.md, ctf.title);
+                });
+                contentWrapper.appendChild(postDiv);
+            });
+        })
+        .catch(error => console.error('Error loading CTFs:', error));
+}
+
 
         function loadSidebar() {
             const sidebarRight = document.querySelector('.sidebar-right');
@@ -227,6 +239,10 @@
 
         async function loadMarkdown(mdFile, title) {
             try {
+                if (!mdFile) { // Check if mdFile is empty
+                    throw new Error('File not found');
+                }
+
                 // Adjust the file path to load from the WriteUps folder
                 const response = await fetch(`WriteUps/${mdFile}`);
                 if (!response.ok) { // Check if the response is not successful (404, etc.)
