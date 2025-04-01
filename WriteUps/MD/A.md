@@ -1,4 +1,4 @@
-# SWAMP CTF
+# A CTF
 
 
 
