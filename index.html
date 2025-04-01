@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Writeups</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script> <!-- Include marked.js -->
+    <style>
+        body {
+            background-color: #181818;
+            color: #ccc;
+            font-family: Arial, sans-serif;
+            display: flex;
+            margin: 0;
+            flex-direction: row; /* Align sidebars and content horizontally */
+        }
+
+        .sidebar-left, .sidebar-right {
+            width: 250px;
+            background-color: #121212;
+            padding: 20px;
+            height: 100vh;
+            position: fixed;
+        }
+
+        .sidebar-left {
+            left: 0;
+        }
+
+        .sidebar-right {
+            right: 0;
+        }
+
+        .sidebar h2 {
+            color: white;
+        }
+
+        .content-wrapper {
+            margin-left: 270px; /* Space for the left sidebar */
+            margin-right: 270px; /* Space for the right sidebar */
+            width: calc(100% - 540px); /* Adjusted width */
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .breadcrumb {
+            font-size: 14px;
+            margin-bottom: 10px;
+            margin-left: 20px; /* Align breadcrumb with the posts */
+        }
+
+        .breadcrumb a {
+            color: #4da6ff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .post {
+            background-color: #222;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            box-sizing: border-box;
+            margin-left: 20px;  /* Added margin to the left of the post */
+            margin-right: 20px; /* Added margin to the right of the post */
+            border: 2px solid #444;  /* Border for posts */
+            transition: transform 0.3s ease-in-out; /* Smooth transition for zoom effect */
+        }
+
+        .post:hover {
+            transform: scale(1.05); /* Zoom in on hover (scale up by 5%) */
+        }
+
+        .post img {
+            width: 120px;
+            height: auto;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .ctf-list a {
+            color: #4da6ff;
+            text-decoration: none;
+            font-size: 16px;
+            display: block;
+            margin-bottom: 5px;
+            cursor: pointer;
+        }
+
+        .ctf-list a:hover {
+            text-decoration: underline;
+        }
+
+        .markdown-content {
+            background-color: #222;
+            padding: 15px;  /* Set the same padding for top and bottom */
+            margin-top: 15px;  /* Space from breadcrumb */
+            border-radius: 8px;
+            border: 2px solid #444;  /* Same border color as posts */
+            box-sizing: border-box;
+            color: #ccc;
+            margin-left: 20px; /* Same margin as posts */
+            margin-right: 20px; /* Same margin as posts */
+        }
+
+        .markdown-content pre {
+            background-color: #333;
+            padding: 10px;
+            border-radius: 8px;
+            color: #ccc;
+            font-family: monospace;
+        }
+
+        .write-ups-heading {
+            color: white;
+            margin-left: 20px; /* Same as the margin for posts */
+            margin-right: 20px; /* Same as the margin for posts */
+            margin-top: 20px;  /* Adds space above the heading */
+            font-size: 36px;   /* Increased font size */
+            font-weight: bold;
+        }
+
+        .sidebar-left h2 {
+            font-size: 32px;  /* Increased font size for "Chaitanya" */
+            text-align: center; /* Centers the "Chaitanya" text */
+            color: white;
+            transition: transform 0.3s ease-in-out; /* Smooth transition for zoom effect */
+        }
+
+        .sidebar-left h2:hover {
+            transform: scale(1.2); /* Zoom in on hover (scale up by 20%) */
+        }
+
+        .profile-pic {
+            margin-top: 20px;  /* Adds space between the name and the image */
+            width: 150px;      /* Increased size of the profile picture */
+            height: 150px;     /* Increased size of the profile picture */
+            border-radius: 50%;  /* Makes the image round */
+            object-fit: cover;   /* Ensures the image covers the space without distortion */
+            border: 2px solid #444;  /* Optional: Adds a border around the image */
+            display: block;     /* Makes the image a block-level element */
+            margin-left: auto;  /* Centers the image horizontally */
+            margin-right: auto; /* Centers the image horizontally */
+            transition: transform 0.3s ease-in-out; /* Smooth transition for zoom effect */
+        }
+
+        .profile-pic:hover {
+            transform: scale(1.2); /* Zoom in on hover (scale up by 20%) */
+        }
+    </style>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            loadHomePage();
+            loadSidebar();
+        });
+
+        function loadHomePage() {
+            const contentWrapper = document.querySelector('.content-wrapper');
+            contentWrapper.innerHTML = `
+                <h1 class="write-ups-heading">Capture the Flag Writeups</h1>  <!-- Added "Write-Ups" heading with class -->
+                <div class="breadcrumb">
+                    <a href="#" onclick="loadHomePage()">Home</a>
+                </div>
+            `;
+            
+            fetch('CTFs.json')
+                .then(response => response.json())
+                .then(data => {
+                    // Sort CTFs by date
+                    data.sort((a, b) => new Date(b.date) - new Date(a.date));
+                    
+                    data.forEach(ctf => {
+                        const postDiv = document.createElement('div');
+                        postDiv.classList.add('post');
+                        postDiv.innerHTML = `
+                            <div>
+                                <h3>${ctf.title}</h3>
+                                <p>${ctf.description}</p>
+                                <p><strong>Date:</strong> ${ctf.date}</p>
+                            </div>
+                            <img src="${ctf.image}" alt="${ctf.title}">
+                        `;
+                        postDiv.addEventListener("click", function() {
+                            loadMarkdown(ctf.md, ctf.title);
+                        });
+                        contentWrapper.appendChild(postDiv);
+                    });
+                })
+                .catch(error => console.error('Error loading CTFs:', error));
+        }
+
+        function loadSidebar() {
+            const sidebarRight = document.querySelector('.sidebar-right');
+            
+            fetch('CTFs.json')
+                .then(response => response.json())
+                .then(data => {
+                    // Sort CTFs by date
+                    data.sort((a, b) => new Date(b.date) - new Date(a.date));
+                    
+                    const ctfListDivRight = document.createElement('div');
+                    ctfListDivRight.classList.add('ctf-list');
+                    
+                    // Add the "Timeline" title only once in the right sidebar
+                    ctfListDivRight.innerHTML = `<h2>Timeline</h2>`;
+                    
+                    data.forEach(ctf => {
+                        const ctfLinkRight = document.createElement('a');
+                        ctfLinkRight.href = "#";
+                        ctfLinkRight.textContent = ctf.title; // Only display the title
+                        ctfLinkRight.addEventListener('click', function() {
+                            loadMarkdown(ctf.md, ctf.title);
+                            document.querySelector('.breadcrumb').innerHTML = `<a href="#" onclick="loadHomePage()">Home</a> > ${ctf.title}`;
+                        });
+                        ctfListDivRight.appendChild(ctfLinkRight);
+                    });
+
+                    sidebarRight.appendChild(ctfListDivRight);
+                })
+                .catch(error => console.error('Error loading CTFs for sidebar:', error));
+        }
+
+        async function loadMarkdown(mdFile, title) {
+            try {
+                // Adjust the file path to load from the WriteUps folder
+                const response = await fetch(`WriteUps/${mdFile}`);
+                if (!response.ok) { // Check if the response is not successful (404, etc.)
+                    throw new Error('File not found');
+                }
+                const text = await response.text();
+                const contentWrapper = document.querySelector('.content-wrapper');
+                contentWrapper.innerHTML = `
+                    <div class="breadcrumb">
+                        <a href="#" onclick="loadHomePage()">Home</a> > ${title}
+                    </div>
+                    <div class="markdown-content" id="readmeContent">${marked.parse(text)}</div>
+                `;
+            } catch (error) {
+                const contentWrapper = document.querySelector('.content-wrapper');
+                contentWrapper.innerHTML = `
+                    <div class="breadcrumb">
+                        <a href="#" onclick="loadHomePage()">Home</a> > ${title}
+                    </div>
+                    <div class="markdown-content"><p>Not Found</p></div>
+                `;
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div class="sidebar-left">
+        <h2>Chaitanya</h2>
+        <img src="https://avatars.githubusercontent.com/u/101591702?v=4" alt="Chaitanya's Profile Picture" class="profile-pic">
+        <!-- Left Sidebar is empty now -->
+    </div>
+    <div class="content-wrapper"></div>
+    <div class="sidebar-right">
+        <!-- Right Sidebar will be populated by JavaScript -->
+    </div>
+</body>
+</html>
