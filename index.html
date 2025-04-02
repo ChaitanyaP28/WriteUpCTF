@@ -247,7 +247,7 @@
                 }
 
                 // Adjust the file path to load from the WriteUps folder
-                const response = await fetch(`WriteUps/MD/${mdFile}`);
+                const response = await fetch(`WriteUps/${mdFile}`);
                 if (!response.ok) { // Check if the response is not successful (404, etc.)
                     throw new Error('File not found');
                 }
