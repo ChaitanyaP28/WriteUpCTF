@@ -241,34 +241,44 @@
         }
 
         async function loadMarkdown(mdFile, title) {
-            try {
-                if (!mdFile) { // Check if mdFile is empty
-                    throw new Error('File not found');
-                }
-
-                // Adjust the file path to load from the WriteUps folder
-                const response = await fetch(`WriteUps/${mdFile}`);
-                if (!response.ok) { // Check if the response is not successful (404, etc.)
-                    throw new Error('File not found');
-                }
-                const text = await response.text();
-                const contentWrapper = document.querySelector('.content-wrapper');
-                contentWrapper.innerHTML = `
-                    <div class="breadcrumb">
-                        <a href="#" onclick="loadHomePage()">Home</a> > ${title}
-                    </div>
-                    <div class="markdown-content" id="readmeContent">${marked.parse(text)}</div>
-                `;
-            } catch (error) {
-                const contentWrapper = document.querySelector('.content-wrapper');
-                contentWrapper.innerHTML = `
-                    <div class="breadcrumb">
-                        <a href="#" onclick="loadHomePage()">Home</a> > ${title}
-                    </div>
-                    <div class="markdown-content"><p>Not Found</p></div>
-                `;
-            }
+    try {
+        if (!mdFile) {
+            throw new Error('File not found');
         }
+
+        // Extract the directory from the Markdown file path (e.g., "Capturepoint5353/")
+        const mdDirectory = mdFile.substring(0, mdFile.lastIndexOf('/') + 1);
+
+        // Adjust the file path to load from the WriteUps folder
+        const response = await fetch(`WriteUps/${mdFile}`);
+        if (!response.ok) {
+            throw new Error('File not found');
+        }
+
+        let text = await response.text();
+
+        // Fix relative image paths by prepending "WriteUps/{mdDirectory}"
+        text = text.replace(/!\[(.*?)\]\((?!https?:\/\/)(.*?)\)/g, (match, alt, src) => {
+            return `![${alt}](WriteUps/${mdDirectory}${src})`;
+        });
+
+        const contentWrapper = document.querySelector('.content-wrapper');
+        contentWrapper.innerHTML = `
+            <div class="breadcrumb">
+                <a href="#" onclick="loadHomePage()">Home</a> > ${title}
+            </div>
+            <div class="markdown-content" id="readmeContent">${marked.parse(text)}</div>
+        `;
+    } catch (error) {
+        const contentWrapper = document.querySelector('.content-wrapper');
+        contentWrapper.innerHTML = `
+            <div class="breadcrumb">
+                <a href="#" onclick="loadHomePage()">Home</a> > ${title}
+            </div>
+            <div class="markdown-content"><p>Not Found</p></div>
+        `;
+    }
+}
     </script>
     <link rel="icon" href="favicon.png" type="image/png">
 </head>
