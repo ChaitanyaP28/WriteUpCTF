@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Writeups</title>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script> <!-- Include marked.js -->
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+
     <style>
         body {
             background-color: #181818;
@@ -154,6 +158,16 @@
         .profile-pic:hover {
             transform: scale(1.2); /* Zoom in on hover (scale up by 20%) */
         }
+        .markdown-content img {
+    max-width: 100%;  /* Ensures the image does not exceed the container width */
+    height: auto;     /* Maintains the aspect ratio */
+    display: block;   /* Prevents inline spacing issues */
+    margin: 10px auto; /* Centers images with some spacing */
+    border-radius: 5px; /* Optional: adds rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: adds a subtle shadow */
+    max-height: 500px; /* Adjust this value if needed */
+    object-fit: contain; /* Ensures the whole image is visible */
+        }
     </style>
 
     <script>
@@ -269,6 +283,12 @@
             </div>
             <div class="markdown-content" id="readmeContent">${marked.parse(text)}</div>
         `;
+
+        // Apply syntax highlighting to code blocks
+        document.querySelectorAll('pre code').forEach((block) => {
+            hljs.highlightElement(block);
+        });
+
     } catch (error) {
         const contentWrapper = document.querySelector('.content-wrapper');
         contentWrapper.innerHTML = `

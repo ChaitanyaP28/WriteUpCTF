@@ -1,11 +1,9 @@
 # Capturepoint5353 CTF
 ## Hosted by Indian Institute of Information Technology Vadodara (IITV) - International Campus Diu
 
-## Binary Exploitation
+# Heapocalypse (Binary Exploitation)
 
-### Heapocalypse
-
-**Solution**
+## Solution
 
 ```python
 #!/usr/bin/env python3
@@ -79,11 +77,9 @@ finally:
 ![alt text](image.png)
 
 
-## General
+# Think you can drive (General)
 
-### Think you can drive
-
-**Soultion**
+## Solution
 
 Given a drive link with a looking-empty Google Sheets file and a Google Docs documents.
 
@@ -110,13 +106,11 @@ Decoding gives us
 ![alt text](image-10.png)
 
 
-## Unknown
-
-### Operational Blackout
+# Operational Blackout (Unknown)
 
 ![alt text](hacker.png)
 
-**Solution**
+## Solution
 
 ```bash
 zsteg -E 'b1,bgr,lsb,xy' hacker.png | grep "flag" --text
@@ -125,9 +119,9 @@ zsteg -E 'b1,bgr,lsb,xy' hacker.png | grep "flag" --text
 ![alt text](image-1.png)
 
 
-### Cipher of the Forgotten Key
+# Cipher of the Forgotten Key (Unknown)
 
-**Solution**
+## Solution
 Unzipping `aweuhrukh34kuvbjKBrufe4huirhuigUIW4EGUIewbfbcbieuwhifurgui345834fbiweth4ihtiuh84hguirbga.zip` gives us a python code.
 
 ```python
@@ -232,9 +226,9 @@ print("Decrypted Message:", message)
 ![alt text](image-4.png)
 
 
-### PunHub
+# PunHub (Unknown)
 
-**Solution**
+## Solution
 
 ![alt text](image-5.png)
 
@@ -245,9 +239,9 @@ Opening the `meme7.jpeg` gives us
 ![alt text](image-6.png)
 
 
-### Easy-Peasy
+# Easy-Peasy (Unknown)
 
-**Solution**
+## Solution
 
 There is a hidden link in the PDF. Pressing `Ctrl+A` Shows it.
 
@@ -259,9 +253,9 @@ Searching for `CTF` in this file gives us.
 ![alt text](image-12.png)
 
 
-### Dora the Explorer Version 2.0 💖
+# Dora the Explorer Version 2.0 💖 (Unknown)
 
-**Soultion**
+## Solution
 
 Using Python decompilers `https://pyinstxtractor-web.netlify.app/` to decompile the exe to .zip
 
@@ -270,27 +264,27 @@ Then searching for flag
 ![alt text](image-13.png)
 
 
-### Feedback
+# Feedback (Unknown)
 
-**Solution**
+## Solution
 
 Just fill in the Google Form
 
 ![alt text](image-14.png)
 
 
-### PhantomFlag
+# PhantomFlag (Unknown)
 
-**Soultion**
+## Solution
 
 Using Microsoft Paint to change the BG color shows the flag
 
 ![alt text](<Screenshot 2025-03-30 232811.png>)
 
 
-### Kurly Mess
+# Kurly Mess (Unknown)
 
-**Solution**
+## Solution
 
 Opening the website doesnt show anything. So we run
 
@@ -341,25 +335,25 @@ curl -X KNOCK http://3.108.161.243:40008/right --verbose
 ![alt text](image-17.png)
 
 
-### Scenic View
+# Scenic View (Unknown)
 
-**Solution**
+## Solution
 
 Running Zsteg on the image gives the flag
 
 ![alt text](image-18.png)
 
 
-### StackSmashers
+# StackSmashers (Unknown)
 
-**Soultion**
+## Solution
 
 ![alt text](image-19.png)
 
 
-### The Server's Riddle
+# The Server's Riddle (Unknown)
 
-**Solution**
+## Solution
 
 Printing the RGB values
 
