@@ -279,7 +279,7 @@ Just fill in the Google Form
 
 Using Microsoft Paint to change the BG color shows the flag
 
-![alt text](<Screenshot 2025-03-30 232811.png>)
+![alt text](image-21.png)
 
 
 # Kurly Mess (Unknown)
