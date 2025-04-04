@@ -174,34 +174,35 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const params = new URLSearchParams(window.location.search);
-            let mdFile = params.get('md');
-            let folderName = null;
-            let title = '';
+  
+    const params = new URLSearchParams(window.location.search);
+    let mdFile = params.get('md');
+    let folderName = null;
+    let title = '';
 
-            // Remove ?None from URL if present
-            if (window.location.search === '?None') {
-                history.replaceState({}, '', window.location.pathname); // Clean URL
-            }
+    // Remove ?None from URL if present
+    if (window.location.search === '?None') {
+        history.replaceState({}, '', window.location.pathname); // Clean URL
+    }
 
-            // If no md param, check if query string has just a folder name like ?Capturepoint5353_3.0
-            if (!mdFile && window.location.search.length > 1 && window.location.search !== '?None') {
-                folderName = decodeURIComponent(window.location.search.substring(1));
-                mdFile = `${folderName}/writeup.md`;
-                title = folderName.replace(/_/g, ' ');
-            } else if (mdFile) {
-                folderName = mdFile.split('/')[0];
-                title = mdFile.split('/').slice(-2).join(' / ');
-            }
+    // If no md param, check if query string has just a folder name like ?Capturepoint5353_3.0
+    if (!mdFile && window.location.search.length > 1 && window.location.search !== '?None') {
+        folderName = decodeURIComponent(window.location.search.substring(1));
+        mdFile = `${folderName}/writeup.md`;
+        title = folderName.replace(/_/g, ' ');
+    } else if (mdFile) {
+        folderName = mdFile.split('/')[0];
+        title = mdFile.split('/').slice(-2).join(' / ');
+    }
 
-            if (mdFile) {
-                loadMarkdown(mdFile, title);
-            } else {
-                loadHomePage();
-            }
+    if (mdFile) {
+        loadMarkdown(mdFile, title);
+    } else {
+        loadHomePage();
+    }
 
-            loadSidebar();
-        });
+    loadSidebar();
+});
 
         window.addEventListener('popstate', function (event) {
             if (event.state && event.state.md) {
@@ -257,7 +258,7 @@
                         contentWrapper.appendChild(postDiv);
                     });
                 })
-            .catch(error => console.error('Error loading CTFs:', error));
+                .catch(error => console.error('Error loading CTFs:', error));
         }
 
 
@@ -391,6 +392,7 @@
             const mdFile = `${folderName}/writeup.md`;
             loadMarkdown(mdFile, folderName.replace(/_/g, ' '));
         }
+
 
     </script>
     <link rel="icon" href="favicon.png" type="image/png">

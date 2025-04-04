@@ -8,9 +8,8 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
-    
+
     <style>
-        /* WHEN NAMING FILES ALWAYS USE _ FOR SPACE*/
         body {
             background-color: #181818;
             color: #ccc;
@@ -173,93 +172,56 @@
     </style>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const params = new URLSearchParams(window.location.search);
-            let mdFile = params.get('md');
-            let folderName = null;
-            let title = '';
-
-            // Remove ?None from URL if present
-            if (window.location.search === '?None') {
-                history.replaceState({}, '', window.location.pathname); // Clean URL
-            }
-
-            // If no md param, check if query string has just a folder name like ?Capturepoint5353_3.0
-            if (!mdFile && window.location.search.length > 1 && window.location.search !== '?None') {
-                folderName = decodeURIComponent(window.location.search.substring(1));
-                mdFile = `${folderName}/writeup.md`;
-                title = folderName.replace(/_/g, ' ');
-            } else if (mdFile) {
-                folderName = mdFile.split('/')[0];
-                title = mdFile.split('/').slice(-2).join(' / ');
-            }
-
-            if (mdFile) {
-                loadMarkdown(mdFile, title);
-            } else {
-                loadHomePage();
-            }
-
+        document.addEventListener("DOMContentLoaded", function() {
+            loadHomePage();
             loadSidebar();
         });
 
-        window.addEventListener('popstate', function (event) {
-            if (event.state && event.state.md) {
-                loadMarkdown(event.state.md, event.state.title);
-            } else {
-                loadHomePage();
-            }
-            
-        });
-
-
         function loadHomePage() {
-            // Restore clean URL without query string
-            history.pushState({}, 'Home', window.location.pathname);
-
-            const contentWrapper = document.querySelector('.content-wrapper');
-            contentWrapper.innerHTML = `
-                <h1 class="write-ups-heading">Capture the Flag Writeups</h1>
-                <div class="breadcrumb">
-                    <a href="" onclick="loadHomePage()">Home</a>
-                </div>
-            `;
-
-            fetch('CTFs.json')
-                .then(response => response.json())
-                .then(data => {
-                    // Sort CTFs by date
-                    data.sort((a, b) => new Date(b.date) - new Date(a.date));
+        const contentWrapper = document.querySelector('.content-wrapper');
+        contentWrapper.innerHTML = `
+            <h1 class="write-ups-heading">Capture the Flag Writeups</h1>
+            <div class="breadcrumb">
+                <a href="#" onclick="loadHomePage()">Home</a>
+            </div>
+        `;
+        
+        fetch('CTFs.json')
+            .then(response => response.json())
+            .then(data => {
+                // Sort CTFs by date
+                data.sort((a, b) => new Date(b.date) - new Date(a.date));
+                
+                data.forEach(ctf => {
+                    const postDiv = document.createElement('div');
+                    postDiv.classList.add('post');
+                    let postContent = `
+                        <div>
+                            <h3>${ctf.title}</h3>
+                            <p>${ctf.description}</p>
+                    `;
                     
-                    data.forEach(ctf => {
-                        const postDiv = document.createElement('div');
-                        postDiv.classList.add('post');
-                        let postContent = `
-                            <div>
-                                <h3>${ctf.title}</h3>
-                                <p>${ctf.description}</p>
-                        `;
-                        
-                        if (ctf.date && ctf.date.trim() !== "") {
-                            postContent += `<p><strong>Date:</strong> ${ctf.date}</p>`;
-                        }
-                        
-                        postContent += `</div>`;
-                        
-                        if (ctf.image && ctf.image.trim() !== "") {
-                            postContent += `<img src="${ctf.image}" alt="${ctf.title}">`;
-                        }
-                        
-                        postDiv.innerHTML = postContent;
-                        postDiv.addEventListener("click", function () {
-                            loadMarkdown(ctf.md, ctf.title);
-                        });
-                        contentWrapper.appendChild(postDiv);
+                    // Check if the date is not empty
+                    if (ctf.date && ctf.date.trim() !== "") {
+                        postContent += `<p><strong>Date:</strong> ${ctf.date}</p>`;
+                    }
+                    
+                    postContent += `</div>`;
+                    
+                    // Check if the image filename is not empty
+                    if (ctf.image && ctf.image.trim() !== "") {
+                        postContent += `<img src="${ctf.image}" alt="${ctf.title}">`;
+                    }
+                    
+                    postDiv.innerHTML = postContent;
+                    postDiv.addEventListener("click", function() {
+                        loadMarkdown(ctf.md, ctf.title);
                     });
-                })
+                    contentWrapper.appendChild(postDiv);
+                });
+            })
             .catch(error => console.error('Error loading CTFs:', error));
         }
-
 
         function loadSidebar() {
             const sidebarRight = document.querySelector('.sidebar-right');
@@ -284,11 +246,11 @@
 
                     data.forEach(ctf => {
                         const ctfLinkRight = document.createElement('a');
-                        ctfLinkRight.href = "javascript:void(0)";
+                        ctfLinkRight.href = "#";
                         ctfLinkRight.textContent = ctf.title; // Only display the title
                         ctfLinkRight.addEventListener('click', function() {
                             loadMarkdown(ctf.md, ctf.title);
-                            document.querySelector('.breadcrumb').innerHTML = `<a href="" onclick="loadHomePage()">Home</a> > ${ctf.title}`;
+                            document.querySelector('.breadcrumb').innerHTML = `<a href="#" onclick="loadHomePage()">Home</a> > ${ctf.title}`;
                         });
                         ctfListDivRight.appendChild(ctfLinkRight);
                     });
@@ -307,20 +269,21 @@
                     practiceHeading.style.marginBottom = "10px";
                     ctfListDivRight.appendChild(practiceHeading);
 
+                    // Add PicoCTF and OverTheWire entries with placeholder links
                     const picoLink = document.createElement('a');
                     picoLink.href = "#";
                     picoLink.textContent = "PicoCTF";
-                    picoLink.addEventListener('click', function(event) {
-                        event.preventDefault();
-                        loadMarkdown("", "PicoCTF");                            //PICO CTF LINK
+                    picoLink.addEventListener('click', function() {
+                        loadMarkdown("", "PicoCTF"); // Leave md path empty for now
+                        document.querySelector('.breadcrumb').innerHTML = `<a href="#" onclick="loadHomePage()">Home</a> > PicoCTF`;
                     });
 
                     const otwLink = document.createElement('a');
                     otwLink.href = "#";
                     otwLink.textContent = "OverTheWire";
-                    otwLink.addEventListener('click', function(event) {
-                        event.preventDefault();
-                        loadMarkdown("", "OverTheWire");                        //OVER THE WIRE LINK
+                    otwLink.addEventListener('click', function() {
+                        loadMarkdown("", "OverTheWire"); // Leave md path empty for now
+                        document.querySelector('.breadcrumb').innerHTML = `<a href="#" onclick="loadHomePage()">Home</a> > OverTheWire`;
                     });
 
                     ctfListDivRight.appendChild(picoLink);
@@ -336,60 +299,48 @@
 
         async function loadMarkdown(mdFile, title) {
             try {
-                const contentWrapper = document.querySelector('.content-wrapper');
-
-                if (!mdFile || mdFile.trim() === "") {
-                    history.pushState({ md: null, title: title }, '', '?None');
-
-                    contentWrapper.innerHTML = `
-                            <div class="breadcrumb">
-                                <a href="" onclick="loadHomePage()">Home</a> > ${title}
-                            </div>
-                            <div class="markdown-content"><p>Not Found</p></div>
-                    `;
-                    return;
+                if (!mdFile) {
+                    throw new Error('File not found');
                 }
 
-                // Normal MD loading
-                const folderName = mdFile.split('/')[0];
-                history.pushState({ md: mdFile, title: title }, '', `?${encodeURIComponent(folderName)}`);
-
+                // Extract the directory from the Markdown file path (e.g., "Capturepoint5353/")
                 const mdDirectory = mdFile.substring(0, mdFile.lastIndexOf('/') + 1);
+
+                // Adjust the file path to load from the WriteUps folder
                 const response = await fetch(`WriteUps/${mdFile}`);
-                if (!response.ok) throw new Error('File not found');
+                if (!response.ok) {
+                    throw new Error('File not found');
+                }
 
                 let text = await response.text();
-                text = text.replace(/!\[(.*?)\]\((?!https?:\/\/)(.*?)\)/g, (match, alt, src) =>
-                    `![${alt}](WriteUps/${mdDirectory}${src})`
-                );
 
+                // Fix relative image paths by prepending "WriteUps/{mdDirectory}"
+                text = text.replace(/!\[(.*?)\]\((?!https?:\/\/)(.*?)\)/g, (match, alt, src) => {
+                    return `![${alt}](WriteUps/${mdDirectory}${src})`;
+                });
+
+                const contentWrapper = document.querySelector('.content-wrapper');
                 contentWrapper.innerHTML = `
                     <div class="breadcrumb">
-                        <a href="" onclick="loadHomePage()">Home</a> > ${title}
+                        <a href="#" onclick="loadHomePage()">Home</a> > ${title}
                     </div>
                     <div class="markdown-content" id="readmeContent">${marked.parse(text)}</div>
                 `;
 
+                // Apply syntax highlighting to code blocks
                 document.querySelectorAll('pre code').forEach((block) => {
                     hljs.highlightElement(block);
                 });
 
-            } 
-            catch (error) {
-                console.error(error);
-                history.replaceState({}, '', '?None');
-                document.querySelector('.content-wrapper').innerHTML = `
+            } catch (error) {
+                const contentWrapper = document.querySelector('.content-wrapper');
+                contentWrapper.innerHTML = `
                     <div class="breadcrumb">
-                        <a href="" onclick="loadHomePage()">Home</a> > ${title}
+                        <a href="#" onclick="loadHomePage()">Home</a> > ${title}
                     </div>
                     <div class="markdown-content"><p>Not Found</p></div>
                 `;
             }
-        }
-
-        function loadMarkdownWithFolder(folderName) {
-            const mdFile = `${folderName}/writeup.md`;
-            loadMarkdown(mdFile, folderName.replace(/_/g, ' '));
         }
 
     </script>
