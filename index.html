@@ -60,27 +60,27 @@
         }
 
         .post {
-    background-color: #222;
-    padding: 15px;
-    margin-bottom: 15px;
-    border-radius: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    box-sizing: border-box;
-    margin-left: 20px;  /* Added margin to the left of the post */
-    margin-right: 20px; /* Added margin to the right of the post */
-    border: 2px solid #444;  /* Border for posts */
-    transition: transform 0.3s ease-in-out; /* Smooth transition for zoom effect */
-    position: relative; /* Added to allow z-index to work */
-    z-index: 10; /* Ensure the post appears above the right sidebar */
-}
+            background-color: #222;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            box-sizing: border-box;
+            margin-left: 20px;  /* Added margin to the left of the post */
+            margin-right: 20px; /* Added margin to the right of the post */
+            border: 2px solid #444;  /* Border for posts */
+            transition: transform 0.3s ease-in-out; /* Smooth transition for zoom effect */
+            position: relative; /* Added to allow z-index to work */
+            z-index: 10; /* Ensure the post appears above the right sidebar */
+        }
 
-.post:hover {
-    transform: scale(1.05); /* Zoom in on hover (scale up by 5%) */
-    z-index: 20; /* Increase the z-index when hovered, making it appear above the sidebar */
-}
+        .post:hover {
+            transform: scale(1.05); /* Zoom in on hover (scale up by 5%) */
+            z-index: 20; /* Increase the z-index when hovered, making it appear above the sidebar */
+        }
 
         .post img {
             width: 120px;
@@ -159,15 +159,16 @@
             transform: scale(1.2); /* Zoom in on hover (scale up by 20%) */
         }
         .markdown-content img {
-    max-width: 100%;  /* Ensures the image does not exceed the container width */
-    height: auto;     /* Maintains the aspect ratio */
-    display: block;   /* Prevents inline spacing issues */
-    margin: 10px auto; /* Centers images with some spacing */
-    border-radius: 5px; /* Optional: adds rounded corners */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: adds a subtle shadow */
-    max-height: 500px; /* Adjust this value if needed */
-    object-fit: contain; /* Ensures the whole image is visible */
+        max-width: 100%;  /* Ensures the image does not exceed the container width */
+        height: auto;     /* Maintains the aspect ratio */
+        display: block;   /* Prevents inline spacing issues */
+        margin: 10px auto; /* Centers images with some spacing */
+        border-radius: 5px; /* Optional: adds rounded corners */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional: adds a subtle shadow */
+        max-height: 500px; /* Adjust this value if needed */
+        object-fit: contain; /* Ensures the whole image is visible */
         }
+
     </style>
 
     <script>
@@ -177,51 +178,50 @@
         });
 
         function loadHomePage() {
-    const contentWrapper = document.querySelector('.content-wrapper');
-    contentWrapper.innerHTML = `
-        <h1 class="write-ups-heading">Capture the Flag Writeups</h1>
-        <div class="breadcrumb">
-            <a href="#" onclick="loadHomePage()">Home</a>
-        </div>
-    `;
-    
-    fetch('CTFs.json')
-        .then(response => response.json())
-        .then(data => {
-            // Sort CTFs by date
-            data.sort((a, b) => new Date(b.date) - new Date(a.date));
-            
-            data.forEach(ctf => {
-                const postDiv = document.createElement('div');
-                postDiv.classList.add('post');
-                let postContent = `
-                    <div>
-                        <h3>${ctf.title}</h3>
-                        <p>${ctf.description}</p>
-                `;
+        const contentWrapper = document.querySelector('.content-wrapper');
+        contentWrapper.innerHTML = `
+            <h1 class="write-ups-heading">Capture the Flag Writeups</h1>
+            <div class="breadcrumb">
+                <a href="#" onclick="loadHomePage()">Home</a>
+            </div>
+        `;
+        
+        fetch('CTFs.json')
+            .then(response => response.json())
+            .then(data => {
+                // Sort CTFs by date
+                data.sort((a, b) => new Date(b.date) - new Date(a.date));
                 
-                // Check if the date is not empty
-                if (ctf.date && ctf.date.trim() !== "") {
-                    postContent += `<p><strong>Date:</strong> ${ctf.date}</p>`;
-                }
-                
-                postContent += `</div>`;
-                
-                // Check if the image filename is not empty
-                if (ctf.image && ctf.image.trim() !== "") {
-                    postContent += `<img src="${ctf.image}" alt="${ctf.title}">`;
-                }
-                
-                postDiv.innerHTML = postContent;
-                postDiv.addEventListener("click", function() {
-                    loadMarkdown(ctf.md, ctf.title);
+                data.forEach(ctf => {
+                    const postDiv = document.createElement('div');
+                    postDiv.classList.add('post');
+                    let postContent = `
+                        <div>
+                            <h3>${ctf.title}</h3>
+                            <p>${ctf.description}</p>
+                    `;
+                    
+                    // Check if the date is not empty
+                    if (ctf.date && ctf.date.trim() !== "") {
+                        postContent += `<p><strong>Date:</strong> ${ctf.date}</p>`;
+                    }
+                    
+                    postContent += `</div>`;
+                    
+                    // Check if the image filename is not empty
+                    if (ctf.image && ctf.image.trim() !== "") {
+                        postContent += `<img src="${ctf.image}" alt="${ctf.title}">`;
+                    }
+                    
+                    postDiv.innerHTML = postContent;
+                    postDiv.addEventListener("click", function() {
+                        loadMarkdown(ctf.md, ctf.title);
+                    });
+                    contentWrapper.appendChild(postDiv);
                 });
-                contentWrapper.appendChild(postDiv);
-            });
-        })
-        .catch(error => console.error('Error loading CTFs:', error));
-}
-
+            })
+            .catch(error => console.error('Error loading CTFs:', error));
+        }
 
         function loadSidebar() {
             const sidebarRight = document.querySelector('.sidebar-right');
@@ -237,7 +237,13 @@
                     
                     // Add the "Timeline" title only once in the right sidebar
                     ctfListDivRight.innerHTML = `<h2>Timeline</h2>`;
-                    
+                    const practiceHeading1 = document.createElement('h3');
+                    practiceHeading1.textContent = "Capture the Flag";
+                    practiceHeading1.style.color = "white";
+                    practiceHeading1.style.marginTop = "5px";
+                    practiceHeading1.style.marginBottom = "10px";
+                    ctfListDivRight.appendChild(practiceHeading1);
+
                     data.forEach(ctf => {
                         const ctfLinkRight = document.createElement('a');
                         ctfLinkRight.href = "#";
@@ -248,57 +254,95 @@
                         });
                         ctfListDivRight.appendChild(ctfLinkRight);
                     });
+                    
+                    // Add a horizontal rule at the end of the timeline
+                    const hr = document.createElement('hr');
+                    hr.style.border = '1px solid #333';
+                    hr.style.marginTop = '15px';
+                    ctfListDivRight.appendChild(hr);
 
+                    // Add "Practice" heading
+                    const practiceHeading = document.createElement('h3');
+                    practiceHeading.textContent = "Practice";
+                    practiceHeading.style.color = "white";
+                    practiceHeading.style.marginTop = "10px";
+                    practiceHeading.style.marginBottom = "10px";
+                    ctfListDivRight.appendChild(practiceHeading);
+
+                    // Add PicoCTF and OverTheWire entries with placeholder links
+                    const picoLink = document.createElement('a');
+                    picoLink.href = "#";
+                    picoLink.textContent = "PicoCTF";
+                    picoLink.addEventListener('click', function() {
+                        loadMarkdown("", "PicoCTF"); // Leave md path empty for now
+                        document.querySelector('.breadcrumb').innerHTML = `<a href="#" onclick="loadHomePage()">Home</a> > PicoCTF`;
+                    });
+
+                    const otwLink = document.createElement('a');
+                    otwLink.href = "#";
+                    otwLink.textContent = "OverTheWire";
+                    otwLink.addEventListener('click', function() {
+                        loadMarkdown("", "OverTheWire"); // Leave md path empty for now
+                        document.querySelector('.breadcrumb').innerHTML = `<a href="#" onclick="loadHomePage()">Home</a> > OverTheWire`;
+                    });
+
+                    ctfListDivRight.appendChild(picoLink);
+                    ctfListDivRight.appendChild(otwLink);
+                    const finalHr = document.createElement('hr');
+                    finalHr.style.border = '1px solid #333';
+                    finalHr.style.marginTop = '15px';
+                    ctfListDivRight.appendChild(finalHr);
                     sidebarRight.appendChild(ctfListDivRight);
                 })
-                .catch(error => console.error('Error loading CTFs for sidebar:', error));
+            .catch(error => console.error('Error loading CTFs for sidebar:', error));
         }
 
         async function loadMarkdown(mdFile, title) {
-    try {
-        if (!mdFile) {
-            throw new Error('File not found');
+            try {
+                if (!mdFile) {
+                    throw new Error('File not found');
+                }
+
+                // Extract the directory from the Markdown file path (e.g., "Capturepoint5353/")
+                const mdDirectory = mdFile.substring(0, mdFile.lastIndexOf('/') + 1);
+
+                // Adjust the file path to load from the WriteUps folder
+                const response = await fetch(`WriteUps/${mdFile}`);
+                if (!response.ok) {
+                    throw new Error('File not found');
+                }
+
+                let text = await response.text();
+
+                // Fix relative image paths by prepending "WriteUps/{mdDirectory}"
+                text = text.replace(/!\[(.*?)\]\((?!https?:\/\/)(.*?)\)/g, (match, alt, src) => {
+                    return `![${alt}](WriteUps/${mdDirectory}${src})`;
+                });
+
+                const contentWrapper = document.querySelector('.content-wrapper');
+                contentWrapper.innerHTML = `
+                    <div class="breadcrumb">
+                        <a href="#" onclick="loadHomePage()">Home</a> > ${title}
+                    </div>
+                    <div class="markdown-content" id="readmeContent">${marked.parse(text)}</div>
+                `;
+
+                // Apply syntax highlighting to code blocks
+                document.querySelectorAll('pre code').forEach((block) => {
+                    hljs.highlightElement(block);
+                });
+
+            } catch (error) {
+                const contentWrapper = document.querySelector('.content-wrapper');
+                contentWrapper.innerHTML = `
+                    <div class="breadcrumb">
+                        <a href="#" onclick="loadHomePage()">Home</a> > ${title}
+                    </div>
+                    <div class="markdown-content"><p>Not Found</p></div>
+                `;
+            }
         }
 
-        // Extract the directory from the Markdown file path (e.g., "Capturepoint5353/")
-        const mdDirectory = mdFile.substring(0, mdFile.lastIndexOf('/') + 1);
-
-        // Adjust the file path to load from the WriteUps folder
-        const response = await fetch(`WriteUps/${mdFile}`);
-        if (!response.ok) {
-            throw new Error('File not found');
-        }
-
-        let text = await response.text();
-
-        // Fix relative image paths by prepending "WriteUps/{mdDirectory}"
-        text = text.replace(/!\[(.*?)\]\((?!https?:\/\/)(.*?)\)/g, (match, alt, src) => {
-            return `![${alt}](WriteUps/${mdDirectory}${src})`;
-        });
-
-        const contentWrapper = document.querySelector('.content-wrapper');
-        contentWrapper.innerHTML = `
-            <div class="breadcrumb">
-                <a href="#" onclick="loadHomePage()">Home</a> > ${title}
-            </div>
-            <div class="markdown-content" id="readmeContent">${marked.parse(text)}</div>
-        `;
-
-        // Apply syntax highlighting to code blocks
-        document.querySelectorAll('pre code').forEach((block) => {
-            hljs.highlightElement(block);
-        });
-
-    } catch (error) {
-        const contentWrapper = document.querySelector('.content-wrapper');
-        contentWrapper.innerHTML = `
-            <div class="breadcrumb">
-                <a href="#" onclick="loadHomePage()">Home</a> > ${title}
-            </div>
-            <div class="markdown-content"><p>Not Found</p></div>
-        `;
-    }
-}
     </script>
     <link rel="icon" href="favicon.png" type="image/png">
 </head>
