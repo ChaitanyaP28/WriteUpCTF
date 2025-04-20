@@ -1,5 +1,12 @@
 [
     {
+        "title": "Dawg CTF 2025",
+        "image": "Logo/DawgCTF2025.png",
+        "description": "organized by the UMBC Cyberdawgs, sponsored by MetaCTF.",
+        "md": "",
+        "date": "20 April, 2025"
+    },
+    {
         "title": "Capturepoint5353 3.0",
         "image": "",
         "description": "",
