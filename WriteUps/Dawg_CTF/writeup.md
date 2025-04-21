@@ -158,7 +158,7 @@ Now Reading the first letter of every sentence gives us the `PADAWAN`
 
 Now using it as a key in Vigenere Cipher gives us the flag
 
-![alt text](<Screenshot (774).png>)
+![alt text](Screenshot774.png)
 
 The Flag is : `DawgCTF{live_long_and_edit}`
 
@@ -180,7 +180,7 @@ The Flag is : `DawgCTF{4ud4c17y_my_b3l0v3d}`
 
 ## Solution
 
-![alt text](<Screenshot (758).png>)
+![alt text](Screenshot758.png)
 
 The Flag is : `DawgCTF{Im-more-of-a-bama-fan}`
 
@@ -191,7 +191,7 @@ The Flag is : `DawgCTF{Im-more-of-a-bama-fan}`
 
 ## Solution
 
-![alt text](<Screenshot (766).png>)
+![alt text](Screenshot766.png)
 
 The Flag is : `DawgCTF{HaveUTriedCatFood?ihave!}`
 
@@ -202,7 +202,7 @@ The Flag is : `DawgCTF{HaveUTriedCatFood?ihave!}`
 
 ## Solution
 
-![alt text](<Screenshot (759).png>)
+![alt text](Screenshot759.png)
 
 The Flag is : `DawgCTF{ifsomeoneorders@HappyCamper_KFC_delivery-illgive10000points}`
 
@@ -213,7 +213,7 @@ The Flag is : `DawgCTF{ifsomeoneorders@HappyCamper_KFC_delivery-illgive10000poin
 
 ## Solution
 
-![alt text](<Screenshot (761).png>)
+![alt text](Screenshot761.png)
 
 The Flag is : `DawgCTF{was_this_actually_easy?}`
 
@@ -224,7 +224,7 @@ The Flag is : `DawgCTF{was_this_actually_easy?}`
 
 ## Solution
 
-![alt text](<Screenshot (762).png>)
+![alt text](Screenshot762.png)
 
 The Flag is : `DawgCTF{howmanyofyoujustknewitwasbaltimore?}`
 
@@ -235,7 +235,7 @@ The Flag is : `DawgCTF{howmanyofyoujustknewitwasbaltimore?}`
 
 ## Solution
 
-![alt text](<Screenshot (777).png>)
+![alt text](Screenshot777.png)
 
 The Flag is : `DawgCTF{wow_feels_christmas!}`
 
@@ -255,7 +255,7 @@ The Flag is : `DawgCTF{montereybay_itisnot}`
 
 ## Solution
 
-![alt text](<Screenshot (778).png>)
+![alt text](Screenshot778.png)
 
 The Flag is : `DawgCTF{goodol'missouray}`
 
@@ -266,7 +266,7 @@ The Flag is : `DawgCTF{goodol'missouray}`
 
 ## Solution
 
-![alt text](<Screenshot (780).png>)
+![alt text](Screenshot780.png)
 
 The Flag is : `DawgCTF{UwUitsaflag}`
 
@@ -277,7 +277,7 @@ The Flag is : `DawgCTF{UwUitsaflag}`
 
 ## Solution
 
-![alt text](<Screenshot (781).png>)
+![alt text](Screenshot781.png)
 
 The Flag is : `DawgCTF{ifyoudidthiswithoutapanoID--goodforyou}`
 
@@ -319,7 +319,7 @@ The Flag is : `DawgCTF{pAwsibiLiti3s_ar3_m30wV3l0us}`
 
 ## Solution
 
-![alt text](<Screenshot (751).png>)
+![alt text](Screenshot751.png)
 
 The Flag is : `DawgCTF{60ph3r_15_n07_d34d!}`
 
@@ -439,7 +439,7 @@ We allign the Signal correctly to the correct sample rate and then read as Binar
 `Red -> 1`
 `Black -> 0`
 
-![alt text](<Screenshot (786).png>)
+![alt text](Screenshot786.png)
 
 The Flag is : `DawgCTF{D3M0DUL4710N_1S_FUN}`
 
@@ -638,6 +638,6 @@ Now using this command
 tshark -r traffic.pcap -Y "ip.src == 10.99.41.238 && tcp.flags.urg == 1" -T fields -e tcp.urgent_pointer
 ```
 
-![alt text](<Screenshot (773).png>)
+![alt text](Screenshot773.png)
 
 The Flag is : `DawgCTF{villagers_bonds}`
