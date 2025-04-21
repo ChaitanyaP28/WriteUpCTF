@@ -83,11 +83,19 @@
             z-index: 20; /* Increase the z-index when hovered, making it appear above the sidebar */
         }
 
-        .post img {
+/*        .post img {
             width: 120px;
             height: auto;
             border-radius: 8px;
             object-fit: cover;
+        }*/
+
+        .post img {
+            max-width: auto;
+            width: 10%;
+            height: auto;
+            border-radius: 8px;
+            margin-top: 10px;
         }
 
         .ctf-list a {
@@ -169,7 +177,86 @@
         max-height: 500px; /* Adjust this value if needed */
         object-fit: contain; /* Ensures the whole image is visible */
         }
+        @media screen and (max-width: 768px) {
+    body {
+        flex-direction: column;
+        overflow-x: hidden;
+    }
 
+    .sidebar-left, .sidebar-right {
+        position: relative;
+        width: 100%;
+        height: auto;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .sidebar-left h2 {
+        font-size: 24px;
+    }
+
+    .profile-pic {
+        width: 100px;
+        height: 100px;
+    }
+
+    .content-wrapper {
+        width: 100%;
+        margin-left: 0;
+        margin-right: 0;
+        padding: 10px;
+    }
+
+    .write-ups-heading {
+        font-size: 28px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .breadcrumb {
+        font-size: 12px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .post {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    /*.post img {
+        width: 100%;
+        margin-top: 10px;
+    }*/
+    .post img {
+            max-width: auto;
+            width: 10%;
+            height: auto;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+    .markdown-content {
+        margin-left: 10px;
+        margin-right: 10px;
+        padding: 10px;
+    }
+
+    .markdown-content pre {
+        overflow-x: auto;
+        font-size: 14px;
+    }
+
+    .ctf-list h3 {
+        font-size: 18px;
+    }
+
+    .ctf-list a {
+        font-size: 14px;
+    }
+}
     </style>
 
     <script>
