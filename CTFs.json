@@ -1,5 +1,12 @@
 [
     {
+        "title": "Break the Syntax CTF 2025",
+        "image": "Logo/BreakTheSyntax2025.png",
+        "description": "Organized by KN White Hats, Scientific Club of Students of Wrocław University of Science and Technology.",
+        "md": "Break_the_Syntax_2025/writeup.md",
+        "date": "11 May, 2025"
+    },
+    {
         "title": "Dawg CTF 2025",
         "image": "Logo/DawgCTF2025.png",
         "description": "Organized by the UMBC Cyberdawgs, sponsored by MetaCTF.",
@@ -90,5 +97,4 @@
         "md": "",
         "date": ""
     }
-
 ]
