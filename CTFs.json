@@ -1,14 +1,14 @@
 [
     {
         "title": "Google CTF 2025",
-        "image": "",
+        "image": "Logo/GoogleCTF2025.png",
         "description": "Hosted by Google",
         "md": "",
         "date": "28 June, 2025"
     },
     {
         "title": "IERAE CTF 2025",
-        "image": "",
+        "image": "Logo/IERAECTF2025.png",
         "description": "Hosted by GMO Cybersecurity Ierae, Inc",
         "md": "IERAE_CTF_2025/writeup.md",
         "date": "21 June, 2025"
