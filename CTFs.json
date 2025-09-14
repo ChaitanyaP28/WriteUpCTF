@@ -1,5 +1,19 @@
 [
     {
+        "title": "CSAW CTF 2025",
+        "image": "Logo/CSAWCTF2025.png",
+        "description": "Hosted by NYU Center for Cybersecurity",
+        "md": "",
+        "date": "13 September, 2025"
+    },
+    {
+        "title": "FortID CTF 2025",
+        "image": "Logo/FortIDCTF2025.png",
+        "description": "Hosted by Blockhouse Technology Zagreb",
+        "md": "",
+        "date": "12 September, 2025"
+    },
+    {
         "title": "Google CTF 2025",
         "image": "Logo/GoogleCTF2025.png",
         "description": "Hosted by Google",
