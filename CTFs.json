@@ -1,5 +1,12 @@
 [
     {
+        "title": "Milan CTF 2025",
+        "image": "Logo/MilanCTF2025.png",
+        "description": "Hosted by Milan IIT Hyderabad",
+        "md": "Milan_CTF_2025/writeup.md",
+        "date": "19 October, 2025"
+    },
+    {
         "title": "CSAW CTF 2025",
         "image": "Logo/CSAWCTF2025.png",
         "description": "Hosted by NYU Center for Cybersecurity",
