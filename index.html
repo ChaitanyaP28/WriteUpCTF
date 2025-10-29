@@ -395,19 +395,21 @@
                     ctfListDivRight.appendChild(practiceHeading);
 
                     const picoLink = document.createElement('a');
-                    picoLink.href = "#";
+                    picoLink.href = "javascript:void(0)";
                     picoLink.textContent = "PicoCTF";
                     picoLink.addEventListener('click', function(event) {
                         event.preventDefault();
-                        loadMarkdown("", "PicoCTF");                            //PICO CTF LINK
+                        // Load the PicoCTF practice writeup directly from the GitHub README (blob URL will be converted to raw)
+                        loadMarkdown("https://github.com/ChaitanyaP28/picoCTF/blob/main/README.md", "PicoCTF");
                     });
 
                     const otwLink = document.createElement('a');
-                    otwLink.href = "#";
+                    otwLink.href = "javascript:void(0)";
                     otwLink.textContent = "OverTheWire";
                     otwLink.addEventListener('click', function(event) {
                         event.preventDefault();
-                        loadMarkdown("", "OverTheWire");                        //OVER THE WIRE LINK
+                        // Load the OverTheWire practice writeup directly from the GitHub README (blob URL will be converted to raw)
+                        loadMarkdown("https://github.com/ChaitanyaP28/OverTheWire/blob/main/README.md", "OverTheWire");                        //OVER THE WIRE LINK
                     });
 
                     ctfListDivRight.appendChild(picoLink);
@@ -421,10 +423,21 @@
             .catch(error => console.error('Error loading CTFs for sidebar:', error));
         }
 
+        // Convert a GitHub blob URL to the raw content URL
+        function githubBlobToRaw(url) {
+            try {
+                // Example: https://github.com/user/repo/blob/main/path/to/file.md
+                // -> https://raw.githubusercontent.com/user/repo/main/path/to/file.md
+                if (!url.includes('github.com')) return url;
+                return url.replace('https://github.com/', 'https://raw.githubusercontent.com/').replace('/blob/', '/');
+            } catch (e) {
+                return url;
+            }
+        }
+
         async function loadMarkdown(mdFile, title) {
             try {
                 const contentWrapper = document.querySelector('.content-wrapper');
-
                 if (!mdFile || mdFile.trim() === "") {
                     history.pushState({ md: null, title: title }, '', '?None');
 
@@ -437,18 +450,41 @@
                     return;
                 }
 
-                // Normal MD loading
-                const folderName = mdFile.split('/')[0];
-                history.pushState({ md: mdFile, title: title }, '', `?${encodeURIComponent(folderName)}`);
+                // Determine if mdFile is a remote URL or a local path
+                const isRemote = mdFile.startsWith('http://') || mdFile.startsWith('https://');
+                let fetchUrl;
+                let mdDirectory;
 
-                const mdDirectory = mdFile.substring(0, mdFile.lastIndexOf('/') + 1);
-                const response = await fetch(`WriteUps/${mdFile}`);
+                if (isRemote) {
+                    // If it's a GitHub blob URL, convert it to raw.githubusercontent URL
+                    fetchUrl = githubBlobToRaw(mdFile);
+                    // directory for relative asset links (images) should be the fetchUrl directory
+                    mdDirectory = fetchUrl.substring(0, fetchUrl.lastIndexOf('/') + 1);
+                    // Push a friendly state using the title
+                    history.pushState({ md: mdFile, title: title }, '', `?${encodeURIComponent(title)}`);
+                } else {
+                    // Local file under WriteUps
+                    const folderName = mdFile.split('/')[0];
+                    history.pushState({ md: mdFile, title: title }, '', `?${encodeURIComponent(folderName)}`);
+                    mdDirectory = mdFile.substring(0, mdFile.lastIndexOf('/') + 1);
+                    fetchUrl = `WriteUps/${mdFile}`;
+                }
+
+                const response = await fetch(fetchUrl);
                 if (!response.ok) throw new Error('File not found');
 
                 let text = await response.text();
-                text = text.replace(/!\[(.*?)\]\((?!https?:\/\/)(.*?)\)/g, (match, alt, src) =>
-                    `![${alt}](WriteUps/${mdDirectory}${src})`
-                );
+
+                // Rewrite relative image links to point to the correct base (local or remote raw)
+                if (isRemote) {
+                    text = text.replace(/!\[(.*?)\]\((?!https?:\/\/)(.*?)\)/g, (match, alt, src) =>
+                        `![${alt}](${mdDirectory}${src})`
+                    );
+                } else {
+                    text = text.replace(/!\[(.*?)\]\((?!https?:\/\/)(.*?)\)/g, (match, alt, src) =>
+                        `![${alt}](WriteUps/${mdDirectory}${src})`
+                    );
+                }
 
                 contentWrapper.innerHTML = `
                     <div class="breadcrumb">
